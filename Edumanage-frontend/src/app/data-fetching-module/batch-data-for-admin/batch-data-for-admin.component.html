@@ -1,0 +1,305 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<div class="flex flex-col gap-4">
+  <!-- Dynamic Content Section -->
+  <div [ngSwitch]="option">
+    <!-- Add Trainer -->
+    <div class="" *ngSwitchCase="'add'">
+      <form (ngSubmit)="onsubmit(form)" #form="ngForm" class="p-6 max-w-lg mx-auto bg-gray-50 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-center text-gray-800">Create New Batch</h2>
+      
+        <!-- Success Message -->
+        <div *ngIf="successMessage" class="mb-4 p-3 text-green-700 bg-green-100 rounded text-center font-medium">
+          {{ successMessage }}
+        </div>
+      
+        <!-- Name Field -->
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 font-medium">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            [(ngModel)]="batch.batchName"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter name"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['name']?.valid" class="text-red-600 text-sm mt-1">
+            Name is required.
+          </div>
+        </div>
+      
+        <!-- Batch time Field -->
+        <div class="mb-4">
+          <label for="batch time" class="block text-gray-700 font-medium">Batch time:</label>
+          <input
+            type="text"
+            id="email"
+            name="batchtime"
+            [(ngModel)]="batch.batchTime"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter batch time"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['batchtime']?.valid" class="text-red-600 text-sm mt-1">
+            A valid batch time is required.
+          </div>
+        </div>
+      
+        <!-- Start date Field -->
+        <div class="mb-4">
+          <label for="start date" class="block text-gray-700 font-medium">Start date:</label>
+          <input
+            type="date"
+            id="stdate"
+            name="sdate"
+            [(ngModel)]="batch.startDate"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter a start date"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['sdate']?.valid" class="text-red-600 text-sm mt-1">
+            Enter a valid date.
+          </div>
+        </div>
+
+        <!-- End date Field -->
+        <div class="mb-4">
+          <label for="end date" class="block text-gray-700 font-medium">End date:</label>
+          <input
+            type="date"
+            id="endate"
+            name="edate"
+            [(ngModel)]="batch.endDate"
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter a start date"
+            aria-required="true"
+          />
+        </div>
+      
+        <!-- Trainer info Field -->
+        <div class="mb-4">
+          <label for="trainer" class="block text-gray-700 font-medium">Trainer:</label>
+          <input
+            type="number"
+            id="trainer"
+            name="trainer"
+            [(ngModel)]="batch.trainer.trainerId"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter trianer Id"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['trainer']?.valid" class="text-red-600 text-sm mt-1">
+            Trainer info is required.
+          </div>
+        </div>
+      
+      
+        <!-- Buttons -->
+        <div class="flex justify-between">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white py-2 px-6 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            (click)="option = 'default'"
+            class="bg-gray-500 text-white py-2 px-6 rounded-lg shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+          >
+            Back
+          </button>
+        </div>
+      </form>
+      
+    </div>
+
+
+    <div class="" *ngSwitchCase="'edit'">
+      <form (ngSubmit)="onUpdate(form)" #form="ngForm" class="p-6 max-w-lg mx-auto bg-gray-50 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-center text-gray-800">Update Batch</h2>
+      
+        <!-- Success Message -->
+        <div *ngIf="successMessage" class="mb-4 p-3 text-green-700 bg-green-100 rounded text-center font-medium">
+          {{ successMessage }}
+        </div>
+      
+        <!-- Name Field -->
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 font-medium">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            [(ngModel)]="upbatch.batchName"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter name"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['name']?.valid" class="text-red-600 text-sm mt-1">
+            Name is required.
+          </div>
+        </div>
+      
+        <!-- Batch time Field -->
+        <div class="mb-4">
+          <label for="batch time" class="block text-gray-700 font-medium">Batch time:</label>
+          <input
+            type="text"
+            id="email"
+            name="batchtime"
+            [(ngModel)]="upbatch.batchTime"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter batch time"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['batchtime']?.valid" class="text-red-600 text-sm mt-1">
+            A valid batch time is required.
+          </div>
+        </div>
+      
+        <!-- Start date Field -->
+        <div class="mb-4">
+          <label for="start date" class="block text-gray-700 font-medium">Start date:</label>
+          <input
+            type="date"
+            id="stdate"
+            name="sdate"
+            [(ngModel)]="upbatch.startDate"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter a start date"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['sdate']?.valid" class="text-red-600 text-sm mt-1">
+            Enter a valid date.
+          </div>
+        </div>
+
+        <!-- End date Field -->
+        <div class="mb-4">
+          <label for="end date" class="block text-gray-700 font-medium">End date:</label>
+          <input
+            type="date"
+            id="endate"
+            name="edate"
+            [(ngModel)]="upbatch.endDate"
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter a start date"
+            aria-required="true"
+          />
+        </div>
+      
+        <!-- Trainer info Field -->
+        <div class="mb-4">
+          <label for="trainer" class="block text-gray-700 font-medium">Trainer:</label>
+          <input
+            type="number"
+            id="trainer"
+            name="trainer"
+            [(ngModel)]="upbatch.trainer.trainerId"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter trianer Id"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['trainer']?.valid" class="text-red-600 text-sm mt-1">
+            Trainer info is required.
+          </div>
+        </div>
+      
+      
+        <!-- Buttons -->
+        <div class="flex justify-between">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white py-2 px-6 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            (click)="option = 'default'"
+            class="bg-gray-500 text-white py-2 px-6 rounded-lg shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+          >
+            Back
+          </button>
+        </div>
+      </form>
+      
+    </div>
+
+    <div *ngSwitchDefault>
+      <p>Welcome! Please select an option above.</p>
+    </div>
+    
+    <!-- Default Case -->
+    <div class="mt-28" *ngSwitchCase="'default'">
+      <div *ngIf="successMessage" class="mb-4 p-3 text-white rounded text-center font-medium">
+        {{ successMessage }}
+      </div>
+      <table class="font-sans w-full table-auto border-collapse border border-gray-300 rounded-3xl overflow-hidden bg-white" [ngStyle]="{ 'filter': option === 'add' ? 'blur(5px)' : 'none' }">
+
+      <!-- <table class="font-sans w-full table-auto border-collapse border border-gray-300 rounded-3xl overflow-hidden bg-white"> -->
+        <!-- Table Row for "All Trainers" heading -->
+        <thead>
+          <tr>
+            <td style="line-height: 26px;" colspan="4" class="pl-6 pt-6 pb-4 text-left font-semibold text-[16px] text-[#3a537f] tracking-wide">
+              All Batches
+            </td>
+            <td class="pt-6 pb-4 pr-6 text-right flex items-center justify-end gap-8">
+              <!-- Add Batch Button -->
+              <button
+                class="bg-blue-500 text-white rounded px-4 py-2 text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                (click)="addBatch()"
+              >
+                Add Batch
+              </button>
+          
+              <!-- Search Bar -->
+              <input
+                type="text"
+                placeholder="Search batches..."
+                [(ngModel)]="searchQuery"
+                (input)="filterBatches()"
+                class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </td>
+          </tr>
+          
+        <!-- Table Headers -->
+          <tr class="text-[12px] text-[#aab7c9] font-bold">
+            <!-- <th class="px-4 py-2 border-b border-gray-300 text-left font-bold">TRAINER ID</th> -->
+            <th class="px-6  pb-3 border-b border-gray-300 text-left font-bold"> BATCH NAME</th>
+            <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">BATCH TIME</th>
+            <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">START DATE</th>
+            <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">END DATE</th>
+            <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">TRAINER NAME</th>
+            <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let batch of filteredBatches">
+            <!-- <td class="px-4 py-2 border-b border-gray-300 text-sm font-semibold tracking-wide text-[#354777]">{{ trainer.trainerId }}</td> -->
+            <td class="px-6 py-2 border-b border-gray-300 text-sm font-semibold tracking-wide text-[#354777]">{{ batch.batchName }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 font-normal text-sm">{{ batch.batchTime }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 font-normal text-sm">{{ batch.startDate }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ batch.endDate }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ batch.trainer.name }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 text-sm font-semibold text-[#9093ad]"><button (click)="editBatch(batch)">Edit |</button><button (click)="deleteBatch(batch)">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </div>
+  </div>
+</div>

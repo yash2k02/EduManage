@@ -1,0 +1,349 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<div class="flex flex-col gap-4">
+  <!-- Dynamic Content Section -->
+  <div [ngSwitch]="option">
+    <!-- Add Trainer -->
+    <div class="" *ngSwitchCase="'add'">
+      <form (ngSubmit)="onsubmit(form)" #form="ngForm" class="p-6 max-w-lg mx-auto bg-gray-50 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-center text-gray-800">Add New Trainer</h2>
+      
+        <!-- Success Message -->
+        <div *ngIf="successMessage" class="mb-4 p-3 text-green-700 bg-green-100 rounded text-center font-medium">
+          {{ successMessage }}
+        </div>
+      
+        <!-- Name Field -->
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 font-medium">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            [(ngModel)]="trainer.name"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter name"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['name']?.valid" class="text-red-600 text-sm mt-1">
+            Name is required.
+          </div>
+        </div>
+      
+        <!-- Email Field -->
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 font-medium">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="trainer.email"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter email"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['email']?.valid" class="text-red-600 text-sm mt-1">
+            A valid email is required.
+          </div>
+        </div>
+      
+        <!-- Phone Field -->
+        <div class="mb-4">
+          <label for="phone" class="block text-gray-700 font-medium">Phone:</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            [(ngModel)]="trainer.phone"
+            required
+            pattern="^[0-9]{10}$"
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter 10-digit phone number"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['phone']?.valid" class="text-red-600 text-sm mt-1">
+            Enter a 10-digit phone number.
+          </div>
+        </div>
+      
+        <!-- Domain Field -->
+        <div class="mb-4">
+          <label for="domain" class="block text-gray-700 font-medium">Domain:</label>
+          <input
+            type="text"
+            id="domain"
+            name="domain"
+            [(ngModel)]="trainer.domain"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter domain"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['domain']?.valid" class="text-red-600 text-sm mt-1">
+            Domain is required.
+          </div>
+        </div>
+      
+        <!-- Username Field -->
+        <div class="mb-4">
+          <label for="username" class="block text-gray-700 font-medium">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            [(ngModel)]="trainer.username"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter username"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['username']?.valid" class="text-red-600 text-sm mt-1">
+            Username is required.
+          </div>
+        </div>
+      
+        <!-- Password Field -->
+        <div class="mb-4">
+          <label for="password" class="block text-gray-700 font-medium">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            [(ngModel)]="trainer.password"
+            required
+            minlength="6"
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter password"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['password']?.valid" class="text-red-600 text-sm mt-1">
+            Password must be at least 6 characters long.
+          </div>
+        </div>
+      
+        <!-- Buttons -->
+        <div class="flex justify-between">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white py-2 px-6 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            (click)="option = 'default'"
+            class="bg-gray-500 text-white py-2 px-6 rounded-lg shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+          >
+            Back
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="" *ngSwitchCase="'edit'">
+      <form (ngSubmit)="onUpdate(form)" #form="ngForm" class="p-6 max-w-lg mx-auto bg-gray-50 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-center text-gray-800">Update Trainer</h2>
+      
+        <!-- Success Message -->
+        <div *ngIf="successMessage" class="mb-4 p-3 text-green-700 bg-green-100 rounded text-center font-medium">
+          {{ successMessage }}
+        </div>
+      
+        <!-- Name Field -->
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 font-medium">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            [(ngModel)]="uptrainer.name"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter name"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['name']?.valid" class="text-red-600 text-sm mt-1">
+            Name is required.
+          </div>
+        </div>
+      
+        <!-- Email Field -->
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 font-medium">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="uptrainer.email"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter email"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['email']?.valid" class="text-red-600 text-sm mt-1">
+            A valid email is required.
+          </div>
+        </div>
+      
+        <!-- Phone Field -->
+        <div class="mb-4">
+          <label for="phone" class="block text-gray-700 font-medium">Phone:</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            [(ngModel)]="uptrainer.phone"
+            required
+            pattern="^[0-9]{10}$"
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter 10-digit phone number"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['phone']?.valid" class="text-red-600 text-sm mt-1">
+            Enter a 10-digit phone number.
+          </div>
+        </div>
+      
+        <!-- Domain Field -->
+        <div class="mb-4">
+          <label for="domain" class="block text-gray-700 font-medium">Domain:</label>
+          <input
+            type="text"
+            id="domain"
+            name="domain"
+            [(ngModel)]="uptrainer.domain"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter domain"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['domain']?.valid" class="text-red-600 text-sm mt-1">
+            Domain is required.
+          </div>
+        </div>
+      
+        <!-- Username Field -->
+        <div class="mb-4">
+          <label for="username" class="block text-gray-700 font-medium">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            [(ngModel)]="uptrainer.username"
+            required
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter username"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['username']?.valid" class="text-red-600 text-sm mt-1">
+            Username is required.
+          </div>
+        </div>
+      
+        <!-- Password Field -->
+        <div class="mb-4">
+          <label for="password" class="block text-gray-700 font-medium">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            [(ngModel)]="uptrainer.password"
+            required
+            minlength="6"
+            class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter password"
+            aria-required="true"
+          />
+          <div *ngIf="form.submitted && !form.controls['password']?.valid" class="text-red-600 text-sm mt-1">
+            Password must be at least 6 characters long.
+          </div>
+        </div>
+      
+        <!-- Buttons -->
+        <div class="flex justify-between">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white py-2 px-6 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            (click)="option = 'default'"
+            class="bg-gray-500 text-white py-2 px-6 rounded-lg shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+          >
+            Back
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngSwitchDefault>
+      <p>Welcome! Please select an option above.</p>
+    </div>
+    
+    <!-- Default Case -->
+    <div class="mt-28" *ngSwitchCase="'default'">
+      <div *ngIf="successMessage" class="mb-4 p-3 text-white rounded text-center font-medium">
+        {{ successMessage }}
+      </div>
+      <table class="font-sans w-full table-auto border-collapse border border-gray-300 rounded-3xl overflow-hidden bg-white" [ngStyle]="{ 'filter': option === 'add' ? 'blur(5px)' : 'none' }">
+
+      <!-- <table class="font-sans w-full table-auto border-collapse border border-gray-300 rounded-3xl overflow-hidden bg-white"> -->
+        <!-- Table Row for "All Trainers" heading -->
+        <thead>
+          <tr>
+            <td style="line-height: 26px;" colspan="3" class="pl-6 pt-6 pb-4 text-left font-semibold text-[16px] text-[#3a537f] tracking-wide">
+              All Trainers
+            </td>
+            <td colspan="1" class="pt-6 pb-4 pr-6 text-right flex justify-end gap-4 space-x-4">
+              <!-- Add Trainer Button -->
+              <button
+                class="bg-blue-500 text-white rounded px-4 py-2 text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                (click)="addTrainer()"
+              >
+                Add Trainer
+              </button>
+          
+              <!-- Search Bar -->
+              <input
+                type="text"
+                placeholder="Search trainers..."
+                [(ngModel)]="searchQuery"
+                (input)="filterTrainers()"
+                class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </td>
+          </tr>
+          
+        <!-- Table Headers -->
+          <tr class="text-[12px] text-[#aab7c9] font-bold">
+            <!-- <th class="px-4 py-2 border-b border-gray-300 text-left font-bold">TRAINER ID</th> -->
+            <th class="px-6  pb-3 border-b border-gray-300 text-left font-bold">NAME</th>
+            <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">EMAIL</th>
+            <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">PHONE</th>
+            <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">DOMAIN</th>
+            <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let trainer of filteredTrainers">
+            <!-- <td class="px-4 py-2 border-b border-gray-300 text-sm font-semibold tracking-wide text-[#354777]">{{ trainer.trainerId }}</td> -->
+            <td class="px-6 py-2 border-b border-gray-300 text-sm font-semibold tracking-wide text-[#354777]">
+              <div>{{ trainer.name }}</div>
+              <div class="font-[400] text-[12px] text-gray-500">{{ trainer.username }}</div>
+            </td>
+            <td class="px-4 py-2 border-b border-gray-300 font-normal text-sm">{{ trainer.email }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ trainer.phone }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ trainer.domain }}</td>
+            <td class="px-4 py-2 border-b border-gray-300 text-sm font-semibold text-[#9093ad]"><button (click)="editTrainer(trainer)">Edit</button><button (click)="deleteTrainer(trainer)">| Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </div>
+  </div>
+</div>

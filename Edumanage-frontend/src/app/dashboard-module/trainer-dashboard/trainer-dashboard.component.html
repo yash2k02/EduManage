@@ -1,0 +1,427 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+  rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<div class="flex min-h-screen w-screen m-0 p-0 relative overflow-hidden">
+  <!-- Sidebar -->
+  <aside class="fixed top-5 bottom-5 left-6 w-64 bg-white shadow-lg rounded-2xl z-30">
+    <p class="font-bold text-center text-2xl mt-4 text-[#627089]">EduManage</p>
+    <ul class="space-y-6 flex flex-col mt-12">
+      <div class="flex h-16 gap-4 items-center rounded pl-6 mx-4 hover:bg-slate-400">
+        <i class="fa-solid fa-user-graduate"></i>
+        <li class="cursor-pointer h-10 flex items-center" (click)="setView('student')">Student</li>
+      </div>
+      <div class="flex h-16 gap-4 items-center rounded pl-6 mx-4 hover:bg-slate-400">
+        <i class="fa-solid fa-users"></i>
+        <li class="cursor-pointer h-10 flex items-center" (click)="setView('batch')"> Batch</li>
+      </div>
+      <div class="flex h-16 gap-4 items-center rounded pl-6 mx-4 hover:bg-slate-400">
+        <i class="fa-solid fa-tasks"></i>
+        <li class="cursor-pointer h-10 flex items-center" (click)="setView('task')"> Task</li>
+      </div>
+      <div class="flex h-16 gap-4 items-center rounded pl-6 mx-4 hover:bg-slate-400">
+        <i class="fa-solid fa-calendar-check"></i>
+        <li class="cursor-pointer h-10 flex items-center" (click)="setView('attendance')">Attendance</li>
+      </div>
+      <div class="flex h-16 gap-4 items-center rounded pl-6 mx-4 hover:bg-slate-400">
+        <i class="fa-solid fa-calendar-check"></i>
+        <li class="cursor-pointer h-10 flex items-center" (click)="setView('submission')">Submission</li>
+      </div>
+      <div class="flex h-16 gap-4 items-center rounded pl-6 mx-4 hover:bg-slate-400">
+        <i class="fa-solid fa-calendar-check"></i>
+        <li class="cursor-pointer h-10 flex items-center" (click)="logout()">Log Out</li>
+      </div>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 ml-[270px]">
+    <!-- Background with two colors -->
+    <div class="absolute top-0 left-0 w-screen h-[300px] bg-[#344767] z-0"></div>
+    <div class="absolute top-[300px] left-0 w-screen h-full bg-[#f0f2f4] z-0"></div>
+
+    <!-- Content Area -->
+    <div class="relative z-10 p-6">
+      <ng-container [ngSwitch]="currentView">
+        <!-- Case 1: Logic for Case 1 -->
+        <div *ngSwitchCase="'student'" class="text-center">
+          <div class="mt-8">
+            <h2 class="text-xl font-semibold text-white mb-6">Students Details by Batch</h2>
+
+            <!-- Loop through all batches -->
+            <div *ngFor="let batch of trainerInfo?.batches; let batchIndex = index" class="mb-10">
+              <!-- Batch Name -->
+              <h3 class="text-lg font-bold text-blue-600 mb-4">
+                Batch {{ batchIndex + 1 }}: {{ batch.batchName }}
+              </h3>
+
+              <!-- Students Table -->
+              <table
+                class="font-sans w-full table-auto border-collapse border border-gray-300 rounded-3xl overflow-hidden bg-white">
+                <thead>
+                  <tr class="text-[12px] text-[#aab7c9] font-bold">
+                    <th class="px-6 py-3 border-b border-gray-300 text-left font-bold"></th>
+                    <th class="px-6 py-3 border-b border-gray-300 text-left font-bold">STUDENT NAME</th>
+                    <th class="px-4 py-3 border-b border-gray-300 text-left font-bold">PHONE</th>
+                    <th class="px-4 py-3 border-b border-gray-300 text-left font-bold">STUDENT ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Check if the batch has students -->
+                  <ng-container *ngIf="batch.students.length > 0; else noStudents">
+                    <!-- Loop through students within a batch -->
+                    <tr *ngFor="let student of batch.students; let studentIndex = index">
+                      <td class="px-4 py-2 border-b border-gray-300 text-left">
+                        {{ studentIndex + 1 }}
+                      </td>
+                      <td
+                        class="px-6 py-2 border-b border-gray-300 text-left text-sm font-semibold tracking-wide text-[#354777]">
+                        {{ student.name }}</td>
+                      <td class="px-4 py-2 border-b border-gray-300 text-left text-sm ">{{ student.phone }}</td>
+                      <td class="px-4 py-2 border-b border-gray-300 text-left text-sm ">{{ student.studentId }}</td>
+                    </tr>
+                  </ng-container>
+
+                  <!-- No Students Message -->
+                  <ng-template #noStudents>
+                    <tr>
+                      <td colspan="5" class="px-4 py-2 border-b border-gray-300 text-center italic">
+                        No students in this batch.
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Case 2: Logic for Case 2 -->
+        <div *ngSwitchCase="'batch'" class="text-center mt-28">
+          <div class="flex flex-wrap justify-center gap-8 mt-8 z-60">
+            <div *ngFor="let batch of trainerInfo?.batches" class="p-4 w-56 h-28 bg-white rounded-lg shadow-md">
+              <h2 class="text-gray-700 text-lg font-semibold">{{ batch.batchName }}</h2>
+              <p class="text-sm text-gray-500">Batch ID: {{ batch.batchId }}</p>
+              <p class="text-sm text-gray-500">Students: {{ batch.students.length }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'task'" class="text-center mt-28">
+          <table
+            class="font-sans w-full table-auto border-collapse border border-gray-300 rounded-3xl overflow-hidden bg-white">
+            <thead class="bg-gray-100">
+              <tr>
+                <td style="line-height: 26px;" colspan="7"
+                  class="pl-6 pt-6 pb-4 text-left font-semibold text-[16px] text-[#3a537f] tracking-wide">
+                  Assign tasks to students
+                </td>
+              </tr>
+              <tr class="text-[12px] text-[#aab7c9] font-bold">
+                <th class="px-6  py-3 border-b border-gray-300 text-left font-bold">STUDENT NAME</th>
+                <th class="px-4  py-3 border-b border-gray-300 text-left font-bold">BATCH NAME</th>
+                <th class="px-4  py-3 border-b border-gray-300 text-left font-bold"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let batch of trainerInfo?.batches">
+                <tr *ngFor="let student of batch.students" class="text-left">
+                  <td
+                    class="px-6 py-2 border-b border-gray-300 text-left text-sm font-semibold tracking-wide text-[#354777]">
+                    {{ student.name }}</td>
+                  <td class="px-4 py-2 border-b border-gray-300 text-left text-sm">{{ batch.batchName }}</td>
+                  <td class="px-4 py-2 border-b border-gray-300 text-left text-sm"><button
+                      class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
+                      (click)="openForm(batch, student)">Assign task</button></td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Form for Assigning Task -->
+        <div *ngIf="selectedStudent && selectedBatch" class="mt-6 border p-4 rounded shadow-lg">
+          <h3 class="text-lg font-bold mb-4">Assign Task</h3>
+          <form (ngSubmit)="submitTask()">
+            <div class="mb-4">
+              <label class="block mb-2 font-semibold">Student ID</label>
+              <input class="border px-4 py-2 w-full" type="text" [(ngModel)]="formData.studentId" name="studentId"
+                readonly />
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2 font-semibold">Batch ID</label>
+              <input class="border px-4 py-2 w-full" type="text" [(ngModel)]="formData.batchId" name="batchId"
+                readonly />
+            </div>
+            <div class="mb-4">
+              <label for="taskId">Task:</label>
+              <select id="taskId" [(ngModel)]="formData.taskId" name="taskId">
+                <option *ngFor="let task of tasks" [value]="task.taskId">
+                  {{ task.description }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2 font-semibold">Trainer ID</label>
+              <input class="border px-4 py-2 w-full" type="text" [(ngModel)]="formData.trainerId" name="trainerId"
+                readonly />
+            </div>
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
+              Submit Task
+            </button>
+          </form>
+        </div>
+
+
+        <div *ngSwitchCase="'attendance'" class="text-center mt-28">
+          <table
+            class="font-sans w-full table-auto border-collapse border border-gray-300 rounded-3xl overflow-hidden bg-white">
+            <thead>
+              <tr>
+                <td style="line-height: 26px;" colspan="3"
+                  class="pl-6 pt-6 pb-4 text-left font-semibold text-[16px] text-[#3a537f] tracking-wide">
+                  All attendances
+                </td>
+                <td colspan="1" class="pt-6 pb-4 pr-6 text-right flex justify-end gap-4 space-x-4">
+                  <!-- Add Trainer Button -->
+                  <button (click)="addAttendance()"
+                    class="bg-blue-500 text-white rounded px-4 py-2 text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Add attendance
+                  </button>
+
+                  <!-- Search Bar -->
+                  <input type="text" placeholder="Search attendances..." [(ngModel)]="searchQuery"
+                    (input)="filterAttendances()"
+                    class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </td>
+              </tr>
+              <tr class="text-[12px] text-[#aab7c9] font-bold" style="white-space: nowrap;">
+                <th class="px-6  py-3 border-b border-gray-300 text-left font-bold">STUDENT NAME</th>
+                <th class="px-4  py-3 border-b border-gray-300 text-left font-bold">BATCH NAME</th>
+                <th class="px-4  py-3 border-b border-gray-300 text-left font-bold">DATE</th>
+                <th class="px-4  py-3 border-b border-gray-300 text-left font-bold">STATUS</th>
+                <th class="px-4  py-3 border-b border-gray-300 text-left font-bold"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let attendance of filteredAttendance" class="text-left">
+                <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ attendance.student.name }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ attendance.batch.batchName }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ attendance.date }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm font-bold">{{ attendance.status }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm font-semibold text-[#9093ad]">
+                  <button (click)="editAttendance(attendance)">Edit | </button><button (click)="deleteAttendance(attendance)"> Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="" *ngSwitchCase="'edit-attendance'">
+          <form (ngSubmit)="onUpdate(form)" #form="ngForm" class="p-6 max-w-lg mx-auto bg-gray-50 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-center text-gray-800">Update Attendance</h2>
+
+            <!-- Success Message -->
+            <div *ngIf="successMessage" class="mb-4 p-3 text-green-700 bg-green-100 rounded text-center font-medium">
+              {{ successMessage }}
+            </div>
+
+            <!-- Name Field -->
+            <div class="mb-4">
+              <label for="name" class="block text-gray-700 font-medium">Student ID:</label>
+              <input type="text" id="name" name="name" [(ngModel)]="upattendance.student.studentId" required
+                class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter name" aria-required="true" readonly />
+              <div *ngIf="form.submitted && !form.controls['name']?.valid" class="text-red-600 text-sm mt-1">
+                Task Name is required.
+              </div>
+            </div>
+
+            <!-- Batch ID Field -->
+            <div class="mb-4">
+              <label for="batch time" class="block text-gray-700 font-medium">Batch ID:</label>
+              <input type="text" id="email" name="Id" [(ngModel)]="upattendance.batch.batchId" required
+                class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter batch id" aria-required="true" readonly/>
+              <div *ngIf="form.submitted && !form.controls['Id']?.valid" class="text-red-600 text-sm mt-1">
+                A Id is required.
+              </div>
+            </div>
+
+            <!-- Due date Field -->
+            <div class="mb-4">
+              <label for="start date" class="block text-gray-700 font-medium">Date:</label>
+              <input type="date" id="stdate" name="edate" [(ngModel)]="upattendance.date" required
+                class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter a start date" aria-required="true" />
+              <div *ngIf="form.submitted && !form.controls['edate']?.valid" class="text-red-600 text-sm mt-1">
+                Enter a valid date.
+              </div>
+            </div>
+
+            <!-- Status field -->
+            <div class="mb-4">
+              <label for="batch time" class="block text-gray-700 font-medium">Status:</label>
+              <input type="text" id="email" name="description" [(ngModel)]="upattendance.status" required
+                class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter task description" aria-required="true" />
+              <div *ngIf="form.submitted && !form.controls['description']?.valid" class="text-red-600 text-sm mt-1">
+                A status is required.
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-between">
+              <button type="submit"
+                class="bg-blue-600 text-white py-2 px-6 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Submit
+              </button>
+              <button type="button" (click)="currentView = 'attendance'"
+                class="bg-gray-500 text-white py-2 px-6 rounded-lg shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                Back
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="" *ngSwitchCase="'add-attendance'">
+          <form (ngSubmit)="onsubmit(form)" #form="ngForm" class="p-6 max-w-lg mx-auto bg-gray-50 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-center text-gray-800">Add New Attendance</h2>
+
+            <!-- Success Message -->
+            <div *ngIf="successMessage" class="mb-4 p-3 text-green-700 bg-green-100 rounded text-center font-medium">
+              {{ successMessage }}
+            </div>
+
+            <!-- Name Field -->
+            <div class="mb-4">
+              <label for="name" class="block text-gray-700 font-medium">Student ID:</label>
+              <input type="text" id="name" name="name" [(ngModel)]="attendance.student.studentId" required
+                class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter name" aria-required="true" />
+              <div *ngIf="form.submitted && !form.controls['name']?.valid" class="text-red-600 text-sm mt-1">
+                Task Name is required.
+              </div>
+            </div>
+
+            <!-- Task description Field -->
+            <div class="mb-4">
+              <label for="batch time" class="block text-gray-700 font-medium">Batch Id:</label>
+              <input type="text" id="email" name="description" [(ngModel)]="attendance.batch.batchId" required
+                class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter task description" aria-required="true" />
+              <div *ngIf="form.submitted && !form.controls['description']?.valid" class="text-red-600 text-sm mt-1">
+                A description is required.
+              </div>
+            </div>
+
+            <!-- Due date Field -->
+            <div class="mb-4">
+              <label for="start date" class="block text-gray-700 font-medium">Date:</label>
+              <input type="date" id="stdate" name="edate" [(ngModel)]="attendance.date" required
+                class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter a start date" aria-required="true" />
+              <div *ngIf="form.submitted && !form.controls['edate']?.valid" class="text-red-600 text-sm mt-1">
+                Enter a valid date.
+              </div>
+            </div>
+
+            <!-- Status filed -->
+            <div class="mb-4">
+              <label for="batch time" class="block text-gray-700 font-medium">Status:</label>
+              <input type="text" id="email" name="description" [(ngModel)]="attendance.status" required
+                class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter task description" aria-required="true" />
+              <div *ngIf="form.submitted && !form.controls['description']?.valid" class="text-red-600 text-sm mt-1">
+                A status is required.
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-between">
+              <button type="submit"
+                class="bg-blue-600 text-white py-2 px-6 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Submit
+              </button>
+              <button type="button" (click)="currentView = 'attendance'"
+                class="bg-gray-500 text-white py-2 px-6 rounded-lg shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                Back
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+        <div *ngSwitchCase="'submission'" class="text-center mt-28">
+          <table
+            class="font-sans w-full table-auto border-collapse border border-gray-300 rounded-3xl overflow-hidden bg-white">
+            <thead class="bg-gray-100">
+              <tr>
+                <td style="line-height: 26px;" colspan="7"
+                  class="pl-6 pt-6 pb-4 text-left font-semibold text-[16px] text-[#3a537f] tracking-wide">
+                  All Submissions
+                </td>
+              </tr>
+              <tr class="text-[12px] text-[#aab7c9] font-bold" style="white-space: nowrap;">
+                <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">BATCH NAME</th>
+                <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">STUDENT NAME</th>
+                <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">TASK DESCRIPTION</th>
+                <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">SUBMISSION DATE</th>
+                <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">PROGRAM</th>
+                <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold">FEEDBACK</th>
+                <th class="px-4  pb-3 border-b border-gray-300 text-left font-bold"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let submission of filteredSubmissions" class="text-left">
+                <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ submission.student.batch.batchName }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ submission.student.name }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ submission.task.description }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ submission.submissionDate }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ submission.code }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm">{{ submission.feedback }}</td>
+                <td class="px-4 py-2 border-b border-gray-300 text-sm font-semibold text-[#9093ad]">
+                  <button>Edit</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+
+        <!-- Default Case -->
+        <div *ngSwitchDefault class="text-center">
+          <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded shadow mb-6">
+            <p class="font-bold text-xl">Welcome, {{ username }}!</p>
+            <p class="text-lg">Manage your students and task allocations effortlessly from your dashboard.</p>
+          </div>
+          <!-- Cards -->
+          <div class="flex justify-center gap-8 mt-8">
+            <div class="p-4 w-56 h-28 bg-white rounded-lg shadow-md">
+              <h2 class="text-gray-700 text-lg font-semibold">Your Batches</h2>
+              <p class="text-2xl font-bold text-blue-600">{{ tBatches }}</p>
+            </div>
+            <div class="p-4 w-56 h-28 bg-white rounded-lg shadow-md">
+              <h2 class="text-gray-700 text-lg font-semibold">Total Students</h2>
+              <p class="text-2xl font-bold text-blue-600">{{ studentCount }}</p>
+            </div>
+            <div class="p-4 w-56 h-28 bg-white rounded-lg shadow-md">
+              <h2 class="text-gray-700 text-lg font-semibold">Total Batches</h2>
+              <p class="text-2xl font-bold text-blue-600">{{ batchCount }}</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+  </div>
+</div>

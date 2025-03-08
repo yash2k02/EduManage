@@ -1,0 +1,91 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-200">
+  <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold text-center mb-6">
+      {{ currentRole | titlecase }} Login
+    </h2>
+
+    <form class="space-y-4" (ngSubmit)="setCreds()">
+      <input type="text"
+        [(ngModel)]="adminUsername"
+        name="adminUsername"
+        *ngIf="currentRole === 'admin'"
+        placeholder="Admin Username"
+        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      >
+      
+      <input type="text"
+        [(ngModel)]="trainerUsername"
+        name="trainerUsername"
+        *ngIf="currentRole === 'trainer'"
+        placeholder="Trainer Username"
+        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+      >
+
+      <input type="text"
+        [(ngModel)]="studentUsername"
+        name="studentUsername"
+        *ngIf="currentRole === 'student'"
+        placeholder="Student Username"
+        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+      >
+
+      <input type="password"
+        [(ngModel)]="adminPassword"
+        name="adminPassword"
+        *ngIf="currentRole === 'admin'"
+        placeholder="Admin Password"
+        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      >
+
+      <input type="password"
+        [(ngModel)]="trainerPassword"
+        name="trainerPassword"
+        *ngIf="currentRole === 'trainer'"
+        placeholder="Trainer Password"
+        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+      >
+
+      <input type="password"
+        [(ngModel)]="studentPassword"
+        name="studentPassword"
+        *ngIf="currentRole === 'student'"
+        placeholder="Student Password"
+        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+      >
+
+      <button type="submit"
+        class="w-full px-4 py-3 text-white rounded-lg transition-all duration-200"
+        [ngClass]="{
+          'bg-blue-500 hover:bg-blue-600': currentRole === 'admin',
+          'bg-green-500 hover:bg-green-600': currentRole === 'trainer',
+          'bg-purple-500 hover:bg-purple-600': currentRole === 'student'
+        }"
+      >
+        Login
+      </button>
+    </form>
+
+    <div class="flex justify-center mt-6 space-x-4">
+      <button *ngIf="currentRole !== 'admin'"
+        (click)="switchRole('admin')"
+        class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-all duration-200"
+      >
+        Admin Login
+      </button>
+      
+      <button *ngIf="currentRole !== 'trainer'"
+        (click)="switchRole('trainer')"
+        class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 transition-all duration-200"
+      >
+        Trainer Login
+      </button>
+
+      <button *ngIf="currentRole !== 'student'"
+        (click)="switchRole('student')"
+        class="px-4 py-2 text-white bg-purple-500 rounded-lg hover:bg-purple-600 transition-all duration-200"
+      >
+        Student Login
+      </button>
+    </div>
+  </div>
+</div>
